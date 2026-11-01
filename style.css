@@ -1,0 +1,684 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  background: #f1f5f9;
+  color: #1e293b;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Container mở rộng theo màn hình máy tính */
+.app-container {
+  width: 100%;
+  max-width: 1560px;
+  min-height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.06);
+}
+
+/* Header banner */
+.header-banner {
+  position: relative;
+  height: 280px;
+  background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.25) 0%, rgba(15, 23, 42, 0.88) 100%),
+    url('images/banner.jpg'),
+    url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1600&q=80');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 32px 44px;
+  color: #fff;
+}
+
+.header-banner h1 {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(8px);
+  padding: 5px 14px;
+  border-radius: 20px;
+  width: fit-content;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.status-dot-wrap {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #22c55e;
+}
+
+.status-dot-pulse {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: rgba(34, 197, 94, 0.5);
+  animation: pulseAnimation 2s infinite ease-out;
+}
+
+@keyframes pulseAnimation {
+  0% { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* Sticky search & category tabs */
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  z-index: 100;
+  padding: 16px 44px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.category-tabs {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.category-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-btn {
+  border: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  color: #475569;
+  padding: 9px 22px;
+  border-radius: 24px;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-btn:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, #f95721 0%, #ff7337 100%);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(249, 87, 33, 0.3);
+  transform: scale(1.02);
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background-color: #f1f5f9;
+  border-radius: 24px;
+  padding: 10px 18px;
+  gap: 10px;
+  border: 1px solid transparent;
+  width: 100%;
+  max-width: 360px;
+  transition: all 0.2s ease;
+}
+
+.search-box:focus-within {
+  background-color: #fff;
+  border-color: #f95721;
+  box-shadow: 0 0 0 3px rgba(249, 87, 33, 0.15);
+}
+
+.search-box svg {
+  width: 18px;
+  height: 18px;
+  stroke: #94a3b8;
+  stroke-width: 2.2;
+  fill: none;
+  flex-shrink: 0;
+}
+
+.search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+  width: 100%;
+  color: #0f172a;
+}
+
+/* Menu Content */
+.menu-content {
+  padding: 30px 44px;
+  flex: 1;
+}
+
+.section-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  margin-top: 10px;
+}
+
+.section-indicator {
+  width: 5px;
+  height: 22px;
+  background: linear-gradient(to bottom, #f95721, #ff8c53);
+  border-radius: 4px;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.3px;
+}
+
+.section-count {
+  font-size: 13px;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+/* Grid món ăn tự động theo màn hình máy tính (từ 3 đến 4-5 cột tùy độ rộng) */
+.food-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 18px;
+  margin-bottom: 36px;
+}
+
+/* Thẻ món ăn */
+.food-card {
+  display: flex;
+  background: #ffffff;
+  border: 1px solid #edf2f7;
+  border-radius: 16px;
+  padding: 14px;
+  gap: 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.food-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(249, 87, 33, 0.35);
+  box-shadow: 0 12px 28px rgba(249, 87, 33, 0.12);
+}
+
+.food-img-wrapper {
+  position: relative;
+  width: 102px;
+  height: 102px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: #f1f5f9;
+  cursor: pointer;
+}
+
+.food-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+  display: block;
+}
+
+.food-card:hover .food-img {
+  transform: scale(1.08);
+}
+
+.view-eye-btn {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: #ffffff;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  border: none;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+.view-eye-btn svg {
+  width: 24px;
+  height: 24px;
+  stroke: #ffffff;
+  stroke-width: 2.2;
+  fill: none;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.view-eye-btn span {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.food-img-wrapper:hover .view-eye-btn {
+  opacity: 1;
+}
+
+.mobile-eye-badge {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.mobile-eye-badge svg {
+  width: 15px;
+  height: 15px;
+  stroke: #fff;
+  stroke-width: 2.2;
+  fill: none;
+}
+
+.food-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  min-width: 0;
+}
+
+.food-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.food-desc {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.45;
+  margin-top: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.food-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.food-price {
+  font-size: 16px;
+  font-weight: 800;
+  color: #f95721;
+  letter-spacing: -0.2px;
+}
+
+.no-result {
+  text-align: center;
+  padding: 80px 20px;
+  color: #94a3b8;
+  font-size: 16px;
+}
+
+/* Modal Phóng To Ảnh (Lightbox) */
+.lightbox-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lightbox-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox-content {
+  background: #ffffff;
+  border-radius: 20px;
+  max-width: 560px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+  transform: scale(0.92);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.lightbox-modal.active .lightbox-content {
+  transform: scale(1);
+}
+
+.lightbox-img-wrap {
+  width: 100%;
+  max-height: 58vh;
+  background-color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.lightbox-img {
+  width: 100%;
+  max-height: 58vh;
+  object-fit: contain;
+  display: block;
+}
+
+.lightbox-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.lightbox-close-btn:hover {
+  background: rgba(249, 87, 33, 0.95);
+  transform: rotate(90deg);
+}
+
+.lightbox-close-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2.2;
+}
+
+.lightbox-details {
+  padding: 22px 28px;
+}
+
+.lightbox-category {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #f95721;
+  background: rgba(249, 87, 33, 0.1);
+  padding: 3px 10px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+
+.lightbox-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 6px;
+  line-height: 1.35;
+}
+
+.lightbox-desc {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+
+.lightbox-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 16px;
+}
+
+.lightbox-price {
+  font-size: 19px;
+  font-weight: 800;
+  color: #f95721;
+}
+
+.lightbox-order-btn {
+  background: linear-gradient(135deg, #0068ff 0%, #0054d1 100%);
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 18px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.2s;
+}
+
+.lightbox-order-btn:hover {
+  opacity: 0.92;
+}
+
+/* Footer */
+.site-footer {
+  background-color: #f8fafc;
+  border-top: 1px solid #edf2f7;
+  padding: 32px 44px;
+  margin-top: auto;
+}
+
+.footer-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.footer-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 12px;
+}
+
+.contact-links {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: #fff;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.contact-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.btn-zalo {
+  background: linear-gradient(135deg, #0068ff, #0054d1);
+}
+
+.btn-facebook {
+  background: linear-gradient(135deg, #1877f2, #1059b8);
+}
+
+.contact-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.qr-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #fff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 14px;
+  padding: 14px 18px;
+  max-width: 440px;
+}
+
+.qr-image {
+  width: 84px;
+  height: 84px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  object-fit: cover;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.qr-info h4 {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.qr-info p {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.45;
+}
+
+/* Tablet & Màn hình vừa */
+@media (max-width: 992px) {
+  .header-banner {
+    height: 230px;
+    padding: 24px 28px;
+  }
+  .header-banner h1 {
+    font-size: 28px;
+  }
+  .sticky-nav {
+    padding: 14px 24px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .search-box {
+    max-width: 100%;
+  }
+  .menu-content {
+    padding: 20px 24px;
+  }
+  .site-footer {
+    padding: 24px;
+  }
+  .footer-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* Mobile nhỏ */
+@media (max-width: 600px) {
+  .header-banner {
+    height: 180px;
+    padding: 16px 20px;
+  }
+  .header-banner h1 {
+    font-size: 24px;
+  }
+  .sticky-nav {
+    padding: 12px 16px 8px;
+  }
+  .menu-content {
+    padding: 16px;
+  }
+  .food-list {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .food-img-wrapper {
+    width: 90px;
+    height: 90px;
+  }
+  .site-footer {
+    padding: 20px 16px;
+  }
+}

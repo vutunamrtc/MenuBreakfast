@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team A Breakfast - Menu Đồ Ăn Sáng</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header-banner">
+      <h1>Team A Breakfast</h1>
+      <div class="status-badge">
+        <span class="status-dot-wrap">
+          <span class="status-dot-pulse"></span>
+          <span class="status-dot"></span>
+        </span>
+        <span>Đang mở cửa phục vụ</span>
+      </div>
+    </header>
+
+    <!-- Navigation & Filter -->
+    <div class="sticky-nav">
+      <div class="category-tabs">
+        <button class="tab-btn active" data-category="all">Tất cả</button>
+        <button class="tab-btn" data-category="banh-trai">Bánh trái</button>
+        <button class="tab-btn" data-category="do-heo-thi">Đồ heo thì</button>
+        <button class="tab-btn" data-category="khac">Khác</button>
+      </div>
+
+      <div class="search-box">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Tìm món (ví dụ: bánh, sữa, phở...)" />
+      </div>
+    </div>
+
+    <!-- Danh sách món ăn -->
+    <main class="menu-content" id="menuContent"></main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="footer-wrapper">
+        <div>
+          <div class="footer-title">Thông tin liên hệ & Đặt món</div>
+          <div class="contact-links">
+            <a href="https://zalo.me/0985395711" target="_blank" class="contact-btn btn-zalo">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.5 5.43 3.84 7.08l-.84 3.09 3.42-1.68C9.55 19.81 10.75 20 12 20c5.52 0 10-4.03 10-9s-4.48-9-10-9z" />
+              </svg>
+              Zalo: 0985.395.711
+            </a>
+            <!-- <a href="https://facebook.com" target="_blank" class="contact-btn btn-facebook">
+              <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              Facebook Quán
+            </a> -->
+          </div>
+        </div>
+
+        <div class="qr-container">
+          <img class="qr-image" src="images/zalome.jpg" alt="QR Website" id="qrWebImg">
+          <div class="qr-info">
+            <h4>Quét Zalo</h4>
+            <p>Quét mã để kết nối nhanh hoặc gửi thông tin đặt trước bữa sáng.</p>
+          </div>
+        </div>
+        <div class="qr-container">
+          <img class="qr-image" src="images/zalome.jpg" alt="QR Website" id="qrWebImg">
+          <div class="qr-info">
+            <h4>Quét QR Website</h4>
+            <p>Quét mã để kết nối nhanh hoặc gửi thông tin đặt trước bữa sáng.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Modal Phóng to ảnh (Lightbox) -->
+  <div class="lightbox-modal" id="lightboxModal">
+    <div class="lightbox-content">
+      <div class="lightbox-img-wrap">
+        <button class="lightbox-close-btn" id="closeLightboxBtn" title="Đóng (Esc)">
+          <svg viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <img class="lightbox-img" id="lightboxImg" src="" alt="Món ăn chi tiết" />
+      </div>
+      <div class="lightbox-details">
+        <span class="lightbox-category" id="lightboxCategory">Bánh trái</span>
+        <h3 class="lightbox-title" id="lightboxTitle">Tên món ăn</h3>
+        <p class="lightbox-desc" id="lightboxDesc">Mô tả món ăn</p>
+        <div class="lightbox-footer">
+          <div class="lightbox-price" id="lightboxPrice">0 đ</div>
+          <a href="https://zalo.me/0985395711" target="_blank" class="lightbox-order-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.5 5.43 3.84 7.08l-.84 3.09 3.42-1.68C9.55 19.81 10.75 20 12 20c5.52 0 10-4.03 10-9s-4.48-9-10-9z" />
+            </svg>
+            Nhắn Zalo đặt món
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const menuData = [
+      {
+        id: 1,
+        category: "banh-trai",
+        categoryName: "Bánh trái",
+        name: "Bánh dày chả mỡ/giò lụa (cái)",
+        description: "Hương vị tuyệt hảo làm say đắm lòng người.",
+        price: "15.000 - 20.000 đ",
+        image: "images/banhdaygio.jpg",
+        fallbackImage: "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 2,
+        category: "banh-trai",
+        categoryName: "Bánh trái",
+        name: "Phở cuốn / Bánh cuốn (hộp)",
+        description: "Bánh cuốn mềm mịn, ăn kèm chả và hành phi thơm nức.",
+        price: "15.000 - 20.000 đ",
+        image: "images/phocuon.jpg",
+        fallbackImage: "https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 3,
+        category: "banh-trai",
+        categoryName: "Bánh trái",
+        name: "Bánh khúc (cái)",
+        description: "Bánh khúc dẻo thơm, đậm đà nhân thịt đỗ bùi béo nóng hổi.",
+        price: 15000,
+        image: "https://daylambanh.edu.vn/wp-content/uploads/2017/09/banh-khuc-deo-thom-bui.jpg",
+        fallbackImage: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 4,
+        category: "banh-trai",
+        categoryName: "Bánh trái",
+        name: "Bánh giò (cái)",
+        description: "Vỏ bánh mềm mượt, nhân thịt mộc nhĩ nêm nếm đậm đà vừa vị.",
+        price: 12000,
+        image: "https://th.bing.com/th/id/OSK.e07a49418d8c7e11beefbf135611d4ef?w=424&h=424&c=7&rs=1&qlt=90&o=6&pid=16.1",
+        fallbackImage: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 5,
+        category: "banh-trai",
+        categoryName: "Bánh trái",
+        name: "Bánh tẻ (2c/cặp)",
+        description: "Bánh tẻ dẻo thơm, nhân thịt mộc nhĩ giòn sần sật chuẩn vị quê.",
+        price: 12000,
+        image: "https://imagevietnam.vnanet.vn/MediaUpload/Org/2023/04/24/9avatar24-10-43-10.jpg",
+        fallbackImage: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 6,
+        category: "banh-trai",
+        categoryName: "Bánh trái",
+        name: "Bánh rán (5c/hộp)",
+        description: "Bánh rán vỏ ngoài giòn rụm, thơm ngon ngọt ngào hấp dẫn.",
+        price: 15000,
+        image: "https://th.bing.com/th/id/OIP.KJYVI_k1s8hcz8qv7146ogHaE8?w=266&h=180&c=7&r=0&o=7&pid=1.7&rm=3",
+        fallbackImage: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 7,
+        category: "do-heo-thi",
+        categoryName: "Đồ heo thì",
+        name: "Khoai lang luộc (kg)",
+        description: "Khoai mật ngọt tự nhiên, thực đơn healthy giàu chất xơ giữ dáng.",
+        price: 50000,
+        image: "images/khoailang.jpg",
+        fallbackImage: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 8,
+        category: "do-heo-thi",
+        categoryName: "Đồ heo thì",
+        name: "Ngô luộc (bắp)",
+        description: "Bắp ngô ngọt thanh mọng nước, thanh lọc cho bữa sáng nhẹ nhàng.",
+        price: 12000,
+        image: "images/ngoluoc.jpg",
+        fallbackImage: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 9,
+        category: "do-heo-thi",
+        categoryName: "Đồ heo thì",
+        name: "Hộp chay (hộp)",
+        description: "Thanh đạm mỗi thứ một tí, dinh dưỡng đủ đầy và nhẹ bụng.",
+        price: 20000,
+        image: "images/hopchay.jpg",
+        fallbackImage: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 10,
+        category: "do-heo-thi",
+        categoryName: "Đồ heo thì",
+        name: "Sushi (6 miếng/hộp)",
+        description: "Rong biển cuộn rau củ và trứng thanh mát, tiện lợi ngày mới.",
+        price: 15000,
+        image: "images/sushi.jpg",
+        fallbackImage: "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 11,
+        category: "do-heo-thi",
+        categoryName: "Đồ heo thì",
+        name: "Phở cuốn (3c/hộp)",
+        description: "Dinh dưỡng cân bằng, thanh mát và thơm ngon đậm đà.",
+        price: 12000,
+        image: "images/phocuon.jpg",
+        fallbackImage: "https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 12,
+        category: "do-heo-thi",
+        categoryName: "Đồ heo thì",
+        name: "Cơm gạo lứt muối vừng (hộp)",
+        description: "Gạo lứt dẻo bùi kết hợp muối vừng thơm lừng, bổ dưỡng cho sức khỏe.",
+        price: 15000,
+        image: "images/comgaolut.jpg",
+        fallbackImage: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 13,
+        category: "do-heo-thi",
+        categoryName: "Đồ heo thì",
+        name: "Sắn cốt dừa (đĩa)",
+        description: "Sắn bở bùi ngập tràn nước cốt dừa béo ngậy thơm nức mũi.",
+        price: 12000,
+        image: "https://th.bing.com/th/id/OIP.u2HkZYtLG2NCma7W18kBEAHaHa?w=158&h=180&c=7&r=0&o=7&pid=1.7&rm=3",
+        fallbackImage: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 14,
+        category: "khac",
+        categoryName: "Khác",
+        name: "Bánh dày bán lẻ (cặp)",
+        description: "Bánh dày trắng dẻo dai nguyên bản cho ngày mới.",
+        price: 10000,
+        image: "https://th.bing.com/th/id/OIP.2mfJFNiXP3UI-BRFulq6UgHaE8?w=248&h=180&c=7&r=0&o=7&pid=1.7&rm=3",
+        fallbackImage: "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&w=600&q=80"
+      }
+    ];
+
+    const categoryOrder = [
+      { key: "banh-trai", name: "Bánh trái" },
+      { key: "do-heo-thi", name: "Đồ heo thì" },
+      { key: "khac", name: "Khác" }
+    ];
+
+    let currentCategory = "all";
+    let searchQuery = "";
+
+    function formatPrice(val) {
+      if (typeof val === "number") {
+        return val.toLocaleString("vi-VN") + " đ";
+      }
+      return val.toString().includes("đ") ? val : val + " đ";
+    }
+
+    function renderMenu() {
+      const container = document.getElementById("menuContent");
+      container.innerHTML = "";
+
+      const query = searchQuery.trim().toLowerCase();
+
+      const filtered = menuData.filter(item => {
+        const matchCategory = currentCategory === "all" || item.category === currentCategory;
+        const matchSearch = !query ||
+          item.name.toLowerCase().includes(query) ||
+          item.description.toLowerCase().includes(query);
+        return matchCategory && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="no-result">Không tìm thấy món nào phù hợp với từ khóa của bạn.</div>`;
+        return;
+      }
+
+      categoryOrder.forEach(cat => {
+        const items = filtered.filter(f => f.category === cat.key);
+        if (items.length === 0) return;
+
+        const section = document.createElement("section");
+        section.innerHTML = `
+          <div class="section-title-wrap">
+            <span class="section-indicator"></span>
+            <h2 class="section-title">${cat.name}</h2>
+            <span class="section-count">${items.length} món</span>
+          </div>
+          <div class="food-list">
+            ${items.map(item => `
+              <div class="food-card">
+                <div class="food-img-wrapper" onclick="openLightbox(${item.id})" title="Nhấn để xem ảnh phóng to">
+                  <img class="food-img" 
+                       src="${item.image}" 
+                       onerror="this.src='${item.fallbackImage}'" 
+                       alt="${item.name}" 
+                       loading="lazy" />
+                  <div class="mobile-eye-badge">
+                    <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  </div>
+                  <button class="view-eye-btn" type="button">
+                    <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    <span>Xem to</span>
+                  </button>
+                </div>
+                <div class="food-info">
+                  <div>
+                    <div class="food-name">${item.name}</div>
+                    <div class="food-desc">${item.description}</div>
+                  </div>
+                  <div class="food-price-row">
+                    <div class="food-price">${formatPrice(item.price)}</div>
+                  </div>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        `;
+        container.appendChild(section);
+      });
+    }
+
+    // Modal Lightbox
+    const modal = document.getElementById("lightboxModal");
+    const closeBtn = document.getElementById("closeLightboxBtn");
+    const lbImg = document.getElementById("lightboxImg");
+    const lbCategory = document.getElementById("lightboxCategory");
+    const lbTitle = document.getElementById("lightboxTitle");
+    const lbDesc = document.getElementById("lightboxDesc");
+    const lbPrice = document.getElementById("lightboxPrice");
+
+    function openLightbox(id) {
+      const item = menuData.find(m => m.id === id);
+      if (!item) return;
+
+      lbImg.src = item.image;
+      lbImg.onerror = () => { lbImg.src = item.fallbackImage; };
+      lbCategory.textContent = item.categoryName;
+      lbTitle.textContent = item.name;
+      lbDesc.textContent = item.description;
+      lbPrice.textContent = formatPrice(item.price);
+
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+      modal.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+
+    closeBtn.addEventListener("click", closeLightbox);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeLightbox();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("active")) {
+        closeLightbox();
+      }
+    });
+
+    // Lọc Category tabs
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentCategory = btn.getAttribute("data-category");
+        renderMenu();
+      });
+    });
+
+    // Tìm kiếm
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      searchQuery = e.target.value;
+      renderMenu();
+    });
+
+    renderMenu();
+  </script>
+</body>
+
+</html>
